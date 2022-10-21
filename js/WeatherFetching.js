@@ -1,192 +1,104 @@
-function guessZipCode(){
-  // Skip geolookup until replaced with TWC (wunderground api dead)
-  return;
+window.CONFIG = {
+  crawl: `Welcome to Champion, INC Corporate Office! This forecast is provided to you by the Champion IT Team.`,
+  greeting: 'This is your weather',
+  language: 'en-US', // Supported in TWC API
+  countryCode: 'US', // Supported in TWC API (for postal key)
+  units: 'e', // Supported in TWC API (e = English (imperial), m = Metric, h = Hybrid (UK)),
+  unitField: 'imperial', // Supported in TWC API. This field will be filled in automatically. (imperial = e, metric = m, uk_hybrid = h)
+  loop: false,
+  secrets: {
+    // Possibly deprecated key: See issue #29
+    // twcAPIKey: 'd522aa97197fd864d36b418f39ebb323'
+    twcAPIKey: '21d8a80b3d6b444998a80b3d6b1449d3'
+  },
 
-  var zipCodeElement = getElement("zip-code-text");
-  // Before filling with auto zip, check and see if
-  // there is already an input
-  if(zipCodeElement.value != ""){
-    return;
-  }
-
-  // always use wunderground API for geolookup
-  // only valid equivalent is GET v3/location/search
-  // TODO: use TWC API GET v3/location/search instead of wunderground geolookup
-  fetch(`https://api.wunderground.com/api/${CONFIG.secrets.wundergroundAPIKey}/geolookup/q/autoip.json`)
-    .then(function(response) {
-      //check for error
-      if (response.status !== 200) {
-        console.log("zip code request error");
-        return;
-      }
-      response.json().then(function(data) {
-        // Only fill zip if the user didn't touch
-        // the box while the zip was fetching
-        if(zipCodeElement.value == ""){
-          zipCodeElement.value = data.location.zip;
-        }
-      });
+  // Config Functions (index.html settings manager)
+  options: [],
+  addOption: (id, name, desc) => {
+    CONFIG.options.push({
+      id,
+      name,
+      desc,
     })
-}
-
-function fetchAlerts(){
-  // Skip alert fetching until replaced with TWC (wunderground api dead)
-
-
-  var alertCrawl = "";
-  // again, always use wunderground for fetching alerts
-  // two api calls are required for one alert
-  // one: GET v1/alerts
-  //        this gets all the alerts issued
-  // two: GET v1/alert/:detailKey/details.json
-  //        this gets the details of the alert
-  // will think of a solution later
-  // TODO: Use v1/alerts and v1/alert to grab alerts from TWC
-  fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=45.8329&lon=-88.0584&exclude=current,minutely,hourly,daily&appid=731ad85ca6206a2f99932073de70f6c4`)
-    .then(function(response) {
-      if (response.status !== 200) {
-        console.log("forecast request error");
-        return;
-      }
-      response.json().then(function(data) {
-		if (data.alerts == undefined){
-			fetchForecast();
-			return;
-		}
-        for(var i = 0; i < data.alerts.length; i++){
-          /* Take the most important alert message and set it as crawl text
-           This will supply more information i.e. tornado warning coverage */
-          alertCrawl = alertCrawl + " " + data.alerts[i].description.replace("...", "");
-
-          // ignore special weather statements
-          alerts[i] = data.alerts[i].description.replace("...", "").split("...", 1)[0].split("*", 1)[0].split("for", 1)[0].replace(/\n/g, " ").replace("...", "").toUpperCase();
-        }
-        if(alertCrawl != ""){
-          CONFIG.crawl = alertCrawl;
-        }
-        alertsActive = alerts.length > 0;
-        fetchForecast();
-      });
+  },
+  submit: (btn, e) => {
+    let args = {}
+    CONFIG.options.forEach((opt) => {
+      args[opt.id] = getElement(`${opt.id}-text`).value
+      localStorage.setItem(opt.id, args[opt.id])
     })
-}
-
-function fetchForecast(){
-  fetch(`https://api.weather.com/v1/geocode/${latitude}/${longitude}/forecast/daily/10day.json?language=${CONFIG.language}&units=${CONFIG.units}&apiKey=${CONFIG.secrets.twcAPIKey}`)
-    .then(function(response) {
-      if (response.status !== 200) {
-        console.log('forecast request error');
-        return;
-      }
-      response.json().then(function(data) {
-        let forecasts = data.forecasts
-        // narratives
-        isDay = forecasts[0].day; // If the API spits out a day forecast, use the day timings
-        let ns = []
-        ns.push(forecasts[0].day || forecasts[0].night); // there must be a day forecast so if the API doesn't provide one, just make it the night one. It won't show anyway.
-        ns.push(forecasts[0].night);
-        ns.push(forecasts[1].day);
-        ns.push(forecasts[1].night);
-        for (let i = 0; i <= 3; i++) {
-          let n = ns[i]
-          forecastTemp[i] = n.temp
-          forecastIcon[i] = n.icon_code
-          forecastNarrative[i] = n.narrative
-          forecastPrecip[i] = `${n.pop}% Chance<br/> of ${n.precip_type.charAt(0).toUpperCase() + n.precip_type.substr(1).toLowerCase()}`
-        }
-        // 7 day outlook
-        for (var i = 0; i < 7; i++) {
-          let fc = forecasts[i+1]
-          outlookHigh[i] = fc.max_temp
-          outlookLow[i] = fc.min_temp
-          outlookCondition[i] = (fc.day ? fc.day : fc.night).phrase_32char.split(' ').join('<br/>')
-          // thunderstorm doesn't fit in the 7 day outlook boxes
-          // so I multilined it similar to that of the original
-          outlookCondition[i] = outlookCondition[i].replace("Thunderstorm", "Thunder</br>storm");
-          outlookIcon[i] = (fc.day ? fc.day : fc.night).icon_code
-        }
-        fetchRadarImages();
-      })
-    })
-}
-
-function fetchCurrentWeather(){
-  fetch(`https://api.weather.com/v3/location/point?postalKey=${zipCode}:${CONFIG.countryCode}&language=${CONFIG.language}&format=json&apiKey=${CONFIG.secrets.twcAPIKey}`)
-    .then(function(response) {
-      if (response.status !== 200) {
-        console.log('conditions request error');
-        return;
-      }
-      response.json().then(function(data) {
-        try {
-          // which LOCALE?!
-          cityName = data.location.displayName.toUpperCase();
-          latitude = data.location.latitude;
-          longitude = data.location.longitude;
-        } catch (err) {
-          alert('Enter valid ZIP code');
-          console.error(err)
-          getZipCodeFromUser();
-          return;
-        }
-        fetch(`https://api.weather.com/v1/geocode/${latitude}/${longitude}/observations/current.json?language=${CONFIG.language}&units=${CONFIG.units}&apiKey=${CONFIG.secrets.twcAPIKey}`)
-          .then(function(response) {
-            if (response.status !== 200) {
-              console.log("conditions request error");
-              return;
-            }
-            response.json().then(function(data) {
-              // cityName is set in the above fetch call and not this one
-              let unit = data.observation[CONFIG.unitField];
-              currentTemperature = Math.round(unit.temp);
-              currentCondition = data.observation.phrase_32char;
-              windSpeed = `${data.observation.wdir_cardinal} ${unit.wspd} ${CONFIG.unit === 'm' ? 'km/h' : 'mph'}`;
-              gusts = unit.gust || 'NONE';
-              feelsLike = unit.feels_like
-              visibility = Math.round(unit.vis)
-              humidity = unit.rh
-              dewPoint = unit.dewpt
-              pressure = unit.altimeter.toPrecision(4);
-              let ptendCode = data.observation.ptend_code
-              pressureTrend = (ptendCode == 1 || ptendCode == 3) ? '▲' : ptendCode == 0 ? '' : '▼'; // if ptendCode == 1 or 3 (rising/rising rapidly) up arrow else its steady then nothing else (falling (rapidly)) down arrow
-              currentIcon = data.observation.icon_code
-              fetchAlerts();
-            });
-          });
-      })
-    });
-
-}
-
-function sleep(milliseconds) {
-  const date = Date.now();
-  let currentDate = null;
-  do {
-    currentDate = Date.now();
-  } while (currentDate - date < milliseconds);
-}
-
-function fetchRadarImages(){
-  // Skip radar until replaced with some other solution (wunderground api dead)
-  radarImage = document.createElement("iframe");
-  radarImage.onerror = function () {
-    getElement('radar-container').style.display = 'none';
-  }
-  radarImage.setAttribute("src","https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D");
-  radarImage.style.width = "1230px"
-  radarImage.style.height = "520px"
-  document.body.appendChild(radarImage);
-  
-
-  if(alertsActive){
-    zoomedRadarImage = document.createElement("iframe");
-    zoomedRadarImage.onerror = function () {
-      getElement('zoomed-radar-container').style.display = 'none';
+    if (args.crawlText !== '') CONFIG.crawl = args.crawlText
+    if (args.greetingText !== '') CONFIG.greeting = args.greetingText
+    if (args.loop === 'y') CONFIG.loop = true
+    if(/(^\d{5}$)|(^\d{5}-\d{4}$)/.test(args['zip-code'])){
+      zipCode = args['zip-code'];
+    } else {
+      alert("Enter valid ZIP code");
+      return;
     }
-    zoomedRadarImage.setAttribute("src","https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D");
-    zoomedRadarImage.style.width = "1230px"
-	zoomedRadarImage.style.height = "520px"
-	document.body.appendChild(zoomedRadarImage);
+    CONFIG.unitField = CONFIG.units === 'm' ? 'metric' : (CONFIG.units === 'h' ? 'uk_hybrid' : 'imperial')
+    fetchCurrentWeather();
+  },
+  load: () => {
+    let settingsPrompt = getElement('settings-prompt')
+    let zipContainer = getElement('zip-container')
+    let advancedSettingsOptions = getElement('advanced-settings-options')
+    CONFIG.options.forEach((option) => {
+      //<div class="regular-text settings-item settings-text">Zip Code</div>
+      let label = document.createElement('div')
+      label.classList.add('strong-text', 'settings-item', 'settings-text')
+      label.appendChild(document.createTextNode(option.name))
+      label.id = `${option.id}-label`
+      //<input class="settings-item settings-text" type="text" id="zip-code-text">
+      let textbox = document.createElement('input')
+      textbox.classList.add('settings-item', 'settings-text', 'settings-input')
+      textbox.type = 'text'
+      textbox.style.fontSize = '20px'
+      textbox.placeholder = option.desc
+      textbox.id = `${option.id}-text`
+      if (localStorage.getItem(option.id)) textbox.value = localStorage.getItem(option.id)
+      let br = document.createElement('br')
+      if(textbox.id == "zip-code-text"){
+        textbox.setAttribute('maxlength', '5')
+        textbox.style.fontSize = '35px'
+		textbox.value = '49801'
+        label.style.width = "auto"
+        zipContainer.appendChild(label)
+        zipContainer.appendChild(textbox)
+        zipContainer.appendChild(br)
+      }
+      else{
+        advancedSettingsOptions.appendChild(label)
+        advancedSettingsOptions.appendChild(textbox)
+        advancedSettingsOptions.appendChild(br)
+      }
+      //<br>
+    })
+    let advancedButtonContainer = document.createElement('div')
+    advancedButtonContainer.classList.add('settings-container')
+    settingsPrompt.appendChild(advancedButtonContainer)
+    let advancedButton = document.createElement('button')
+    advancedButton.innerHTML = "Show advanced options"
+    advancedButton.id = "advanced-options-text"
+    advancedButton.setAttribute('onclick', 'toggleAdvancedSettings()')
+    advancedButton.classList.add('regular-text', 'settings-input', 'button')
+    advancedButtonContainer.appendChild(advancedButton)
+    //<button class="setting-item settings-text" id="submit-button" onclick="checkZipCode();" style="margin-bottom: 10px;">Start</button>-->
+    let btn = document.createElement('button')
+    btn.classList.add('setting-item', 'settings-text', 'settings-input', 'button')
+    btn.id = 'submit-button'
+    btn.onclick = CONFIG.submit
+    btn.style = 'margin-bottom: 10px;'
+    btn.appendChild(document.createTextNode('Start'))
+    settingsPrompt.appendChild(btn)
+	btn.click()
+	CONFIG.loop = 'y'
+    if (CONFIG.loop || localStorage.getItem('loop') === 'y') {
+      CONFIG.loop = true;
+      hideSettings();
+      CONFIG.submit()
+    }
   }
-
-  scheduleTimeline();
 }
+
+CONFIG.unitField = CONFIG.units === 'm' ? 'metric' : (CONFIG.units === 'h' ? 'uk_hybrid' : 'imperial')
