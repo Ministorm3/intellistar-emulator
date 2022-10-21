@@ -31,8 +31,7 @@ function guessZipCode(){
 
 function fetchAlerts(){
   // Skip alert fetching until replaced with TWC (wunderground api dead)
-  fetchForecast();
-  return;
+
 
   var alertCrawl = "";
   // again, always use wunderground for fetching alerts
@@ -43,23 +42,24 @@ function fetchAlerts(){
   //        this gets the details of the alert
   // will think of a solution later
   // TODO: Use v1/alerts and v1/alert to grab alerts from TWC
-  fetch(`https://api.wunderground.com/api/${CONFIG.secrets.wundergroundAPIKey}/alerts/q/${zipCode}.json`)
+  fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=45.8329&lon=-88.0584&exclude=current,minutely,hourly,daily&appid=731ad85ca6206a2f99932073de70f6c4`)
     .then(function(response) {
       if (response.status !== 200) {
         console.log("forecast request error");
         return;
       }
       response.json().then(function(data) {
+		if (data.alerts == undefined){
+			fetchForecast();
+			return;
+		}
         for(var i = 0; i < data.alerts.length; i++){
           /* Take the most important alert message and set it as crawl text
            This will supply more information i.e. tornado warning coverage */
-          alertCrawl = alertCrawl + " " + data.alerts[i].message.replace("...", "");
+          alertCrawl = alertCrawl + " " + data.alerts[i].description.replace("...", "");
 
           // ignore special weather statements
-          if(data.alerts[i].type == "SPE"){
-            continue;
-          }
-          alerts[i] = data.alerts[i].message.replace("...", "").split("...", 1)[0].split("*", 1)[0].split("for", 1)[0].replace(/\n/g, " ").replace("...", "").toUpperCase();
+          alerts[i] = data.alerts[i].description.replace("...", "").split("...", 1)[0].split("*", 1)[0].split("for", 1)[0].replace(/\n/g, " ").replace("...", "").toUpperCase();
         }
         if(alertCrawl != ""){
           CONFIG.crawl = alertCrawl;
@@ -157,22 +157,35 @@ function fetchCurrentWeather(){
 
 }
 
+function sleep(milliseconds) {
+  const date = Date.now();
+  let currentDate = null;
+  do {
+    currentDate = Date.now();
+  } while (currentDate - date < milliseconds);
+}
+
 function fetchRadarImages(){
   // Skip radar until replaced with some other solution (wunderground api dead)
-  scheduleTimeline();
-
-  radarImage = new Image();
+  radarImage = document.createElement("iframe");
   radarImage.onerror = function () {
     getElement('radar-container').style.display = 'none';
   }
-  radarImage.src = `https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D`;
+  radarImage.setAttribute("src","https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D");
+  radarImage.style.width = "1230px"
+  radarImage.style.height = "520px"
+  document.body.appendChild(radarImage);
+  
 
   if(alertsActive){
-    zoomedRadarImage = new Image();
+    zoomedRadarImage = document.createElement("iframe");
     zoomedRadarImage.onerror = function () {
       getElement('zoomed-radar-container').style.display = 'none';
     }
-    zoomedRadarImage.src = `https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D`;
+    zoomedRadarImage.setAttribute("src","https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D");
+    zoomedRadarImage.style.width = "1230px"
+	zoomedRadarImage.style.height = "520px"
+	document.body.appendChild(zoomedRadarImage);
   }
 
   scheduleTimeline();
