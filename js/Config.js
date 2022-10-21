@@ -1,5 +1,5 @@
 window.CONFIG = {
-  crawl: `Due to the discontinuation of Weather Underground's API, severe weather alerts, automatic geolookup, and doppler radar imagery are broken for now.`,
+  crawl: `Welcome to Champion, INC Corporate Office! This forecast is provided to you by the Champion IT Team.`,
   greeting: 'This is your weather',
   language: 'en-US', // Supported in TWC API
   countryCode: 'US', // Supported in TWC API (for postal key)
@@ -61,6 +61,7 @@ window.CONFIG = {
       if(textbox.id == "zip-code-text"){
         textbox.setAttribute('maxlength', '5')
         textbox.style.fontSize = '35px'
+		textbox.value = '49801'
         label.style.width = "auto"
         zipContainer.appendChild(label)
         zipContainer.appendChild(textbox)
@@ -90,6 +91,8 @@ window.CONFIG = {
     btn.style = 'margin-bottom: 10px;'
     btn.appendChild(document.createTextNode('Start'))
     settingsPrompt.appendChild(btn)
+	btn.click()
+	CONFIG.loop = 'y'
     if (CONFIG.loop || localStorage.getItem('loop') === 'y') {
       CONFIG.loop = true;
       hideSettings();
