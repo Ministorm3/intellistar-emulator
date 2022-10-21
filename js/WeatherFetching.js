@@ -160,7 +160,6 @@ function fetchCurrentWeather(){
 function fetchRadarImages(){
   // Skip radar until replaced with some other solution (wunderground api dead)
   scheduleTimeline();
-  return;
 
   radarImage = new Image();
   radarImage.onerror = function () {
