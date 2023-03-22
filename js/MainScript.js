@@ -22,7 +22,7 @@ window.onload = function() {
   preLoadMusic();
   setMainBackground();
   resizeWindow();
-  setClockTime();
+  // setClockTime();
   if (!CONFIG.loop) {
     getElement("settings-container").style.display = 'block';
     guessZipCode();
