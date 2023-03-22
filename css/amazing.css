@@ -5,7 +5,7 @@
   height: 140px;
   position: absolute;
   opacity: 1;
-  transition: top 100ms 2000ms linear, opacity 100ms 2000ms linear;
+  transition: top 100ms 2000ms linear;
 }
 
 #amazing-text{
@@ -13,11 +13,11 @@
   font-size: 103px;
   width: 0%;
   top: 50%;
-  opacity: 0;
+  opacity: 1; /* Changed from 0 to 1 */
   position: relative;
   overflow: hidden;
   transform: translateY(-50%);
-  transition: width 300ms 500ms linear, opacity 300ms 500ms;
+  transition: width 300ms 500ms linear; /* Removed opacity transition */
 }
 
 #amazing-logo{
@@ -31,15 +31,9 @@
 
 #amazing-text.extend{
   width: 100%;
-  opacity: 1;
 }
 
 #amazing-logo.shown{
   transform: translateY(-50%) scale(1, 1);
   left: 930px;
-}
-
-#amazing-container.hide{
-  top: 300px;
-  opacity: 0;
 }
