@@ -308,7 +308,8 @@ function clearElements(){
   getElement("content-container").classList.add("expand");
   getElement("timeline-container").style.visibility = "hidden";
   showEnding();
-  setTimeout(clearEnd, 2000);
+  // stopping the automatic removal of the end screen
+  // setTimeout(clearEnd, 2000);
 }
 
 function showEnding(){
