@@ -42,7 +42,7 @@ function fetchAlerts(){
   //        this gets the details of the alert
   // will think of a solution later
   // TODO: Use v1/alerts and v1/alert to grab alerts from TWC
-  fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=45.8329&lon=-88.0584&exclude=current,minutely,hourly,daily&appid=731ad85ca6206a2f99932073de70f6c4`)
+  fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=40.4406&lon=-79.9959&exclude=current,minutely,hourly,daily&appid=731ad85ca6206a2f99932073de70f6c4`)
     .then(function(response) {
       if (response.status !== 200) {
         console.log("forecast request error");
@@ -171,7 +171,7 @@ function fetchRadarImages(){
   radarImage.onerror = function () {
     getElement('radar-container').style.display = 'none';
   }
-  radarImage.setAttribute("src","https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D");
+  radarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4428,-79.9915,7&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=0&layer=radar&sm=0&sn=1&hu=0");
   radarImage.style.width = "1230px"
   radarImage.style.height = "520px"
   document.body.appendChild(radarImage);
@@ -182,7 +182,7 @@ function fetchRadarImages(){
     zoomedRadarImage.onerror = function () {
       getElement('zoomed-radar-container').style.display = 'none';
     }
-    zoomedRadarImage.setAttribute("src","https://radar.weather.gov/?settings=v1_eyJhZ2VuZGEiOnsiaWQiOiJ3ZWF0aGVyIiwiY2VudGVyIjpbLTg4LjE5OCw0NS41MTRdLCJsb2NhdGlvbiI6Wy04OC4wNjUsNDUuODIxXSwiem9vbSI6N30sImFuaW1hdGluZyI6dHJ1ZSwiYmFzZSI6InN0YW5kYXJkIiwiYXJ0Y2MiOmZhbHNlLCJjb3VudHkiOmZhbHNlLCJjd2EiOmZhbHNlLCJyZmMiOmZhbHNlLCJzdGF0ZSI6ZmFsc2UsIm1lbnUiOmZhbHNlLCJzaG9ydEZ1c2VkT25seSI6ZmFsc2UsIm9wYWNpdHkiOnsiYWxlcnRzIjowLCJsb2NhbCI6MC42LCJsb2NhbFN0YXRpb25zIjowLjgsIm5hdGlvbmFsIjoxfX0%3D");
+    zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4459,-79.9915,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=0&layer=radar&sm=0&sn=1&hu=0");
     zoomedRadarImage.style.width = "1230px"
 	zoomedRadarImage.style.height = "520px"
 	document.body.appendChild(zoomedRadarImage);
