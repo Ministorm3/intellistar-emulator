@@ -61,7 +61,7 @@ window.CONFIG = {
       if(textbox.id == "zip-code-text"){
         textbox.setAttribute('maxlength', '5')
         textbox.style.fontSize = '35px'
-		textbox.value = '49801'
+		textbox.value = '15222'
         label.style.width = "auto"
         zipContainer.appendChild(label)
         zipContainer.appendChild(textbox)
