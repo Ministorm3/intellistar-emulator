@@ -1,5 +1,5 @@
 window.CONFIG = {
-  crawl: `Thank you for watching! We will be right back after this short weather break. This forcast is generated once per hour.`,
+  crawl: `Thank you for watching! We will be right back after this short weather break. This forcast is generated once every 20 minutes.`,
   greeting: 'This is your weather',
   language: 'en-US', // Supported in TWC API
   countryCode: 'US', // Supported in TWC API (for postal key)
