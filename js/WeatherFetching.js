@@ -177,16 +177,14 @@ function fetchRadarImages(){
   document.body.appendChild(radarImage);
   
 
-  if(alertsActive){
-    zoomedRadarImage = document.createElement("iframe");
-    zoomedRadarImage.onerror = function () {
-      getElement('zoomed-radar-container').style.display = 'none';
-    }
-    zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4459,-79.9915,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=0&layer=radar&sm=0&sn=1&hu=0");
-    zoomedRadarImage.style.width = "1230px"
-	zoomedRadarImage.style.height = "520px"
-	document.body.appendChild(zoomedRadarImage);
+  zoomedRadarImage = document.createElement("iframe");
+  zoomedRadarImage.onerror = function () {
+    getElement('zoomed-radar-container').style.display = 'none';
   }
+  zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4459,-79.9915,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=0&layer=radar&sm=0&sn=1&hu=0");
+    zoomedRadarImage.style.width = "1230px"
+    zoomedRadarImage.style.height = "520px"
+    document.body.appendChild(zoomedRadarImage);
 
   scheduleTimeline();
 }
