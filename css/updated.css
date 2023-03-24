@@ -5,7 +5,7 @@
   height: 326px;
   position: absolute;
   opacity: 1;
-  transition: top 100ms 2000ms linear, opacity 100ms 2000ms linear;
+  /* Removed transition for top and opacity */
 }
 
 #updated-text{
@@ -24,7 +24,7 @@
   left: 400px;
   height: 53%;
   top: 142px;
-  transform: scale(0, 0);
+  transform: scale(1, 1); /* Changed scale from (0, 0) to (1, 1) */
 }
 
 #updated-logo.shown{
@@ -35,7 +35,4 @@
   width: 100%;
 }
 
-#updated-container.hide{
-  top: 100px;
-  opacity: 0;
-}
+/* Remove the #updated-container.hide selector */
