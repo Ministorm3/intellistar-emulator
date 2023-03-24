@@ -171,7 +171,7 @@ function fetchRadarImages(){
   radarImage.onerror = function () {
     getElement('radar-container').style.display = 'none';
   }
-  radarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4428,-79.9915,7&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=0&layer=radar&sm=0&sn=1&hu=0");
+  radarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4428,-79.9915,7&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=1&layer=radar&sm=0&sn=1&hu=0");
   radarImage.style.width = "1230px"
   radarImage.style.height = "520px"
   document.body.appendChild(radarImage);
@@ -181,7 +181,7 @@ function fetchRadarImages(){
   zoomedRadarImage.onerror = function () {
     getElement('zoomed-radar-container').style.display = 'none';
   }
-  zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4459,-79.9915,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=0&layer=radar&sm=0&sn=1&hu=0");
+  zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4459,-79.9915,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=1&layer=radar&sm=0&sn=1&hu=0");
     zoomedRadarImage.style.width = "1230px"
     zoomedRadarImage.style.height = "520px"
     document.body.appendChild(zoomedRadarImage);
