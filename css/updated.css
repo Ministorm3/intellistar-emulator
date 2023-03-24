@@ -5,7 +5,7 @@
   height: 326px;
   position: absolute;
   opacity: 1;
-  /* Removed transition for top and opacity */
+  transition: top 100ms 2000ms linear
 }
 
 #updated-text{
@@ -24,7 +24,7 @@
   left: 400px;
   height: 53%;
   top: 142px;
-  transform: scale(1, 1); /* Changed scale from (0, 0) to (1, 1) */
+  transform: scale(0, 0);
 }
 
 #updated-logo.shown{
