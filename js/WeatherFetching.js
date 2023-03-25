@@ -42,7 +42,7 @@ function fetchAlerts(){
   //        this gets the details of the alert
   // will think of a solution later
   // TODO: Use v1/alerts and v1/alert to grab alerts from TWC
-  fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=40.4406&lon=-79.9959&exclude=current,minutely,hourly,daily&appid=731ad85ca6206a2f99932073de70f6c4`)
+  fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=38.8077&lon=-78.7858&exclude=current,minutely,hourly,daily&appid=731ad85ca6206a2f99932073de70f6c4`)
     .then(function(response) {
       if (response.status !== 200) {
         console.log("forecast request error");
@@ -171,7 +171,7 @@ function fetchRadarImages(){
   radarImage.onerror = function () {
     getElement('radar-container').style.display = 'none';
   }
-  radarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4428,-79.9915,7&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=1&layer=radar&sm=0&sn=1&hu=0");
+  radarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=38.8077,-78.7858&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=1&layer=radar&sm=0&sn=1&hu=0");
   radarImage.style.width = "1230px"
   radarImage.style.height = "520px"
   document.body.appendChild(radarImage);
@@ -181,7 +181,7 @@ function fetchRadarImages(){
   zoomedRadarImage.onerror = function () {
     getElement('zoomed-radar-container').style.display = 'none';
   }
-  zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=40.4459,-79.9915,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=1&layer=radar&sm=0&sn=1&hu=0");
+  zoomedRadarImage.setAttribute("src","https://www.rainviewer.com/map.html?loc=38.8077,-78.7858,9&oFa=0&oC=1&oU=0&oCS=1&oF=1&oAP=1&c=3&o=70&lm=1&layer=radar&sm=0&sn=1&hu=0");
     zoomedRadarImage.style.width = "1230px"
     zoomedRadarImage.style.height = "520px"
     document.body.appendChild(zoomedRadarImage);
