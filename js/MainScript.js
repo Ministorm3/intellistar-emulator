@@ -213,7 +213,7 @@ function executePage(pageIndex, subPageIndex){
 
   var isLastPage = pageIndex >= pageOrder.length-1 && subPageIndex >= pageOrder[pageOrder.length-1].subpages.length-1;
   if(isLastPage)
-    setTimeout(hideCrawl, 2000);
+    setTimeout(hideCrawl, 6000);
 
 
   if(currentSubPageName == "current-page"){
