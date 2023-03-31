@@ -125,6 +125,11 @@
   left: -100%;
 }
 
+#open-weather-logo{
+  width: 200px;
+  height: auto;
+}
+
 #hello-text-container.hidden{
   width: 0px;
 }
