@@ -118,27 +118,41 @@ function hideSettings(){
   getElement('settings-container').style.pointerEvents = 'none';
 }
 
-function executeGreetingPage(){
+function executeGreetingPage() {
   getElement('background-image').classList.remove("below-screen");
   getElement('content-container').classList.add('shown');
   getElement('infobar-twc-logo').classList.add('shown');
   getElement('hello-text').classList.add('shown');
   getElement('hello-location-text').classList.add('shown');
   getElement('greeting-text').classList.add('shown');
-  getElement('acknowledgements-text').classList.add('shown');
+
+  var acknowledgementsTextElements = document.querySelectorAll('.acknowledgements-text');
+  acknowledgementsTextElements.forEach(function(element) {
+    element.classList.add('shown');
+  });
+
   getElement('local-logo-container').classList.add("shown");
   setTimeout(clearGreetingPage, 2500);
 }
 
-function clearGreetingPage(){
+function clearGreetingPage() {
   // Remove transition delay from greeting
   getElement('greeting-text').classList.remove('shown');
-  getElement('acknowledgements-text').classList.remove('shown');
+
+  var acknowledgementsTextElements = document.querySelectorAll('.acknowledgements-text');
+  acknowledgementsTextElements.forEach(function(element) {
+    element.classList.remove('shown');
+  });
+
   getElement('local-logo-container').classList.remove('shown');
 
   // Hide everything
   getElement('greeting-text').classList.add('hidden');
-  getElement('acknowledgements-text').classList.add('hidden');
+
+  acknowledgementsTextElements.forEach(function(element) {
+    element.classList.add('hidden');
+  });
+
   getElement('hello-text-container').classList.add('hidden');
   getElement("hello-location-container").classList.add("hidden");
   getElement("local-logo-container").classList.add("hidden");
@@ -148,6 +162,7 @@ function clearGreetingPage(){
   revealTimeline();
   setTimeout(showCrawl, 3000);
 }
+
 
 // Set start and end times for every sub page.
 function schedulePages(){
