@@ -16,6 +16,15 @@
   position: relative;
 }
 
+#acknowledgements-text-container{
+  position: absolute;
+  top: 245px;
+  left: 420px;
+  width: 700px;
+  height: auto;;
+  overflow: hidden;
+}
+
 #acknowledgements-text{
   transition: opacity .3s, left .3s;
   transition-timing-function: linear;
