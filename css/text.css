@@ -15,6 +15,13 @@
   color: white;
 }
 
+.small-text{
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.15);
+  font-family: akkoThin;
+  font-size: 31px;
+  color: white;
+}
+
 .strong-text{
   font-family: akkoLight;
   font-weight: bold;
