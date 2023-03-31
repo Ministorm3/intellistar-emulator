@@ -24,7 +24,7 @@
   overflow: hidden;
 }
 
-#acknowledgements-text{
+.acknowledgements-text{
   transition: opacity .3s, left .3s;
   transition-timing-function: linear;
   opacity: 0;
@@ -116,12 +116,12 @@
   left: -100%;
 }
 
-#acknowledgements-text.shown{
+.acknowledgements-text.shown{
   transition-delay: 600ms;
   opacity: 1;
 }
 
-#acknowledgements-text.hidden{
+.acknowledgements-text.hidden{
   left: -100%;
 }
 
