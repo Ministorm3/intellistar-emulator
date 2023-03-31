@@ -28,7 +28,7 @@
   transition: opacity .3s, left .3s;
   transition-timing-function: linear;
   opacity: 0;
-  top: -10px;
+  top: 0px;
   left: 0px;
   position: relative;
 }
