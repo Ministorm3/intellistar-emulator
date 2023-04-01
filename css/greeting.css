@@ -25,6 +25,7 @@
   width: 700px;
   height: auto;
   overflow: hidden;
+  text-align: right;
 }
 
 .acknowledgements-text{
