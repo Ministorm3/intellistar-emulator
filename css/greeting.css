@@ -83,6 +83,11 @@
   height: auto;
 }
 
+#rainviewer-icon{
+  width: 50px;
+  height: auto;
+}
+
 #hello-location-container.hidden{
   top: -65px;
   left: 35%;
