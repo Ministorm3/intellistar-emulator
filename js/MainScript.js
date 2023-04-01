@@ -132,7 +132,6 @@ function executeGreetingPage() {
   });
 
   getElement('local-logo-container').classList.add("shown");
-  getElement('open-weather-logo').classList.add("shown");
   setTimeout(clearGreetingPage, 2500);
 }
 
@@ -146,7 +145,6 @@ function clearGreetingPage() {
   });
 
   getElement('local-logo-container').classList.remove('shown');
-  getElement('open-weather-logo').classList.remove('shown');
 
   // Hide everything
   getElement('greeting-text').classList.add('hidden');
@@ -158,7 +156,6 @@ function clearGreetingPage() {
   getElement('hello-text-container').classList.add('hidden');
   getElement("hello-location-container").classList.add("hidden");
   getElement("local-logo-container").classList.add("hidden");
-  getElement("open-weather-logo").classList.add("hidden");
 
   schedulePages();
   loadInfoBar();
