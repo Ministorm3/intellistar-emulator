@@ -25,6 +25,8 @@
   width: 700px;
   height: auto;
   overflow: hidden;
+  display: flex; /* Add display flex to container */
+  align-items: center; /* Vertically align items in center */
 }
 
 .acknowledgements-text{
