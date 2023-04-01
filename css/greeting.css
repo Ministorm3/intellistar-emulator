@@ -133,6 +133,7 @@
 
 #acknowledgements-text-container.hidden{
   top: 100%;
+  opacity: 0;
 }
 
 #hello-text-container.hidden{
