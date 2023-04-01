@@ -78,6 +78,11 @@
   transition: top 0.5s, height 0.5s, left 0.5s, width 50ms;
 }
 
+#open-weather-logo{
+  width: 150px;
+  height: auto;
+}
+
 #hello-location-container.hidden{
   top: -65px;
   left: 35%;
@@ -125,9 +130,13 @@
   left: -100%;
 }
 
-#open-weather-logo{
-  width: 150px;
-  height: auto;
+#open-weather-logo.shown{
+  transition-delay: 600ms;
+  opacity: 1;
+}
+
+#open-weather-logo.hidden{
+  left: -100%;
 }
 
 #hello-text-container.hidden{
