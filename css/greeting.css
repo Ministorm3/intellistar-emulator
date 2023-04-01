@@ -25,8 +25,6 @@
   width: 700px;
   height: auto;
   overflow: hidden;
-  display: flex; /* Add display flex to container */
-  align-items: center; /* Vertically align items in center */
 }
 
 .acknowledgements-text{
@@ -102,6 +100,12 @@
   width: 25px;
   height: auto;
   top: 10px;
+  vertical-align: middle; /* Vertically align the icon relative to the text */
+}
+
+.rainviewer-wrapper {
+  display: inline-flex; /* Set display to inline-flex to align items */
+  align-items: center; /* Vertically align items in center */
 }
 
 #hello-location-container.hidden{
