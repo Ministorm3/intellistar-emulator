@@ -132,7 +132,7 @@
 }
 
 #acknowledgements-text-container.hidden{
-  bottom: -100%;
+  top: -100%;
 }
 
 #hello-text-container.hidden{
