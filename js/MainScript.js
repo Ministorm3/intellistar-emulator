@@ -125,14 +125,8 @@ function executeGreetingPage() {
   getElement('hello-text').classList.add('shown');
   getElement('hello-location-text').classList.add('shown');
   getElement('greeting-text').classList.add('shown');
-
-  //var acknowledgementsTextElements = document.querySelectorAll('.acknowledgements-text');
-  //acknowledgementsTextElements.forEach(function(element) {
-  //  element.classList.add('shown');
-  //});
-  
-  getElement("acknowledgements-text-container").classList.add("shown");
-
+  getElement("acknowledgements-container").classList.add("shown");
+  getElement("alerts-credit-container").classList.add("shown");
   getElement('local-logo-container').classList.add("shown");
   setTimeout(clearGreetingPage, 2500);
 }
@@ -140,26 +134,17 @@ function executeGreetingPage() {
 function clearGreetingPage() {
   // Remove transition delay from greeting
   getElement('greeting-text').classList.remove('shown');
-
-  //var acknowledgementsTextElements = document.querySelectorAll('.acknowledgements-text');
-  //acknowledgementsTextElements.forEach(function(element) {
-  //  element.classList.remove('shown');
-  //});
-
   getElement('local-logo-container').classList.remove('shown');
-  getElement('acknowledgements-text-container').classList.remove('shown');
+  getElement('acknowledgements-container').classList.remove('shown');
+  getElement('alerts-credit-container').classList.remove('shown');
 
   // Hide everything
   getElement('greeting-text').classList.add('hidden');
-
-  //acknowledgementsTextElements.forEach(function(element) {
-  //  element.classList.add('hidden');
-  //});
-
   getElement('hello-text-container').classList.add('hidden');
   getElement("hello-location-container").classList.add("hidden");
   getElement("local-logo-container").classList.add("hidden");
-  getElement("acknowledgements-text-container").classList.add("hidden");
+  getElement("acknowledgements-container").classList.add("hidden");
+  getElement("alerts-credit-container").classList.add("hidden");
 
   schedulePages();
   loadInfoBar();
