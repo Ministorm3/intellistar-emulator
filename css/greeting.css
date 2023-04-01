@@ -20,7 +20,7 @@
   transition-timing-function: linear;
   opacity: 0;
   position: absolute;
-  top: 400px;
+  top: 450px;
   left: 420px;
   width: 700px;
   height: auto;
@@ -38,7 +38,7 @@
   transition-timing-function: linear;
   opacity: 0;
   position: absolute;
-  top: 400px;
+  top: 450px;
   left: 420px;
   width: 700px;
   height: auto;
@@ -52,7 +52,7 @@
   top: 120px;
   left: 420px;
   width: 185px;
-  height: 55px;
+  height: 60px;
   overflow: hidden;
 }
 
